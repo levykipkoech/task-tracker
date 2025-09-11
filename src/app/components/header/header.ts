@@ -9,4 +9,8 @@ import { Button } from '../button/button';
 })
 export class Header {
  tittle: string = "Task Tracker"
+
+ toggleAddTask(){
+  console.log("toggled")
+ }
 }
