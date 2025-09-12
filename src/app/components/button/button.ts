@@ -4,13 +4,13 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   selector: 'app-button',
   imports: [],
   templateUrl: './button.html',
-  styleUrl: './button.css'
+  styleUrl: './button.css',
 })
 export class Button {
-  @Input() text?: string
-  @Output() btnClick = new EventEmitter()
-  
-  onClick(){
-    this.btnClick.emit()
+  @Input() text?: string;
+  @Output() btnClick = new EventEmitter();
+
+  onClick() {
+    this.btnClick.emit();
   }
 }
