@@ -6,10 +6,10 @@ import { TaskSevice } from '../../service/task-sevice';
 
 @Component({
   selector: 'app-tasks',
-  standalone: true,  // 👈 make sure it's marked standalone
+  standalone: true,  
   imports: [TaskItem, CommonModule],
   templateUrl: './tasks.html',
-  styleUrls: ['./tasks.css']   // 👈 plural
+  styleUrls: ['./tasks.css']   
 })
 export class Tasks implements OnInit {
   tasks: Task[] = [];
@@ -19,6 +19,12 @@ export class Tasks implements OnInit {
   ngOnInit(): void {
     this.taskService.getTasks().subscribe((tasks)=>{
     this.tasks = tasks
+    })
+  }
+
+  deleteTask(task:Task){
+    this.taskService.deleteTask(task).subscribe(()=>{
+      this.tasks = this.tasks.filter((t)=> t.id !== task.id)
     })
   }
 }
