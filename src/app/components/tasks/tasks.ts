@@ -6,10 +6,10 @@ import { TaskSevice } from '../../service/task-sevice';
 
 @Component({
   selector: 'app-tasks',
-  standalone: true,  
+  standalone: true,
   imports: [TaskItem, CommonModule],
   templateUrl: './tasks.html',
-  styleUrls: ['./tasks.css']   
+  styleUrls: ['./tasks.css'],
 })
 export class Tasks implements OnInit {
   tasks: Task[] = [];
@@ -17,15 +17,18 @@ export class Tasks implements OnInit {
   constructor(private taskService: TaskSevice) {}
 
   ngOnInit(): void {
-    this.taskService.getTasks().subscribe((tasks)=>{
-    this.tasks = tasks
-    })
+    this.taskService.getTasks().subscribe((tasks) => {
+      this.tasks = tasks;
+    });
   }
 
-  deleteTask(task:Task){
-    this.taskService.deleteTask(task).subscribe(()=>{
-      this.tasks = this.tasks.filter((t)=> t.id !== task.id)
-    })
+  deleteTask(task: Task) {
+    this.taskService.deleteTask(task).subscribe(() => {
+      this.tasks = this.tasks.filter((t) => t.id !== task.id);
+    });
+  }
+  TogleReminder(task: Task) {
+    task.reminder = !task.reminder;
+    this.taskService.updateTaskReminder(task).subscribe()
   }
 }
-

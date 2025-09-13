@@ -1,6 +1,8 @@
 <div class="grid grid-cols-1 md:grid-cols-2">
-  <div  class="bg-gray-800 m-2 p-2 rounded-lg flex justify-between"
-  [ngClass]="{'border-b-4 border-green-500': task.reminder}"
+  <div
+    class="bg-gray-800 m-2 p-2 rounded-lg flex justify-between"
+    [ngClass]="{ 'border-b-4 border-green-500': task.reminder }"
+    (click)="onToggle(task)"
   >
     <div>
       <h3
@@ -12,7 +14,7 @@
     </div>
     <div>
       <button (click)="onDelete(task)" class="text-red-600 hover:text-red-800 hover:cursor-pointer">
-        <fa-icon  [icon]="faTrash"></fa-icon>
+        <fa-icon [icon]="faTrash"></fa-icon>
       </button>
     </div>
   </div>
