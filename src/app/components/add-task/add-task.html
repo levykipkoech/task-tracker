@@ -1,1 +1,37 @@
-<p>add-task works!</p>
+<form (ngSubmit)="onSubmit()" class="shadow-sm shadow-gray-300 rounded-xl m-3 p-3">
+  <div class="mt-3">
+    <label class="font-bold text-lg" for="text">Task:</label>
+    <input
+      type="text"
+      name="text"
+      [(ngModel)]="text"
+      placeholder="Add Task"
+      class="rounded-lg placeholder-gray-600 border border-gray-200 m-2 p-2"
+    />
+  </div>
+  <div class="mt-3">
+    <label class="font-bold text-lg" for="text">Day & Time:</label>
+    <input
+      type="text"
+      name="Day & time"
+      placeholder="Add Day & time"
+      [(ngModel)]="day"
+      class="rounded-lg placeholder-gray-600 border border-gray-200 m-2 p-2"
+    />
+  </div>
+  <div class="mt-3 items-center justify-between">
+    <label class="font-bold text-lg" for="reminder">set remider:</label>
+    <input
+      type="checkbox"
+      name="remider"
+      [(ngModel)]="reminder"
+      class="rounded-xl h-4 w-4 cursor-pointer placeholder-gray-600 border border-gray-200 m-2 p-2"
+    />
+  </div>
+
+  <input
+    type="submit"
+    value="save task"
+    class="px-4 py-2 bg-gray-600 text-white rounded-lg shadow-md hover:shadow-blue-500/50 transition duration-300"
+  />
+</form>
