@@ -54,7 +54,7 @@ export class Tasks implements OnInit, OnDestroy {
     if (!task.id) return;
     try {
       await this.taskService.deleteTask(task);
-      console.log('Task deleted!');
+      //console.log('Task deleted!');
     } catch (err) {
       console.error('Error deleting task:', err);
     }
@@ -63,7 +63,7 @@ export class Tasks implements OnInit, OnDestroy {
   async addTask(task: Task) {
     try {
       await this.taskService.addTask(task);
-      console.log('Task added!');
+      //console.log('Task added!');
       // Firestore auto-syncs via getTasks(), so no manual push needed
     } catch (err) {
       console.error('Error adding task:', err);

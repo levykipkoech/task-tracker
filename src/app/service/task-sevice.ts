@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {
   Firestore,
   collection,
@@ -27,7 +27,9 @@ const taskConverter: FirestoreDataConverter<Task> = {
 
 @Injectable({ providedIn: 'root' })
 export class TaskService {
-  constructor(private firestore: Firestore) {}
+  private firestore = inject(Firestore);
+
+  constructor() {}
 
   getTasks(): Observable<Task[]> {
     return new Observable<Task[]>((observer) => {
@@ -39,10 +41,10 @@ export class TaskService {
         snapshot.forEach((doc) => {
           const data = doc.data();
           const task: Task = {
-            id: doc.id,                        
-            text: data['text'] || '',          
-            day: data['day'] || '',            
-            reminder: data['reminder'] || false 
+            id: doc.id,                        // Keep as string (no conversion)
+            text: data['text'] || '',          // Use bracket notation
+            day: data['day'] || '',            // Use bracket notation
+            reminder: data['reminder'] || false // Use bracket notation
           };
           tasks.push(task);
         });
@@ -56,6 +58,7 @@ export class TaskService {
   }
 
   addTask(task: Task) {
+    // Remove the id when adding (Firestore will generate it)
     const { id, ...taskData } = task;
     const tasksRef = collection(this.firestore, 'task-tracker').withConverter(taskConverter);
     return addDoc(tasksRef, taskData as Task);
