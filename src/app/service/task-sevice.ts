@@ -1,39 +1,75 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-
-import { Task } from '../Task';
+import {
+  Firestore,
+  collection,
+  doc,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  query,
+  onSnapshot,
+  FirestoreDataConverter
+} from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
+import { Task } from '../Task';
 
-const httpOptions = {
-  headers: new HttpHeaders({
-    'Content-Type': 'application/json',
-  }),
+const taskConverter: FirestoreDataConverter<Task> = {
+  toFirestore(task: Task) {
+    return { ...task };
+  },
+  fromFirestore(snapshot, options) {
+    const data = snapshot.data(options)!;
+    return {
+      ...data
+    } as Task;
+  }
 };
 
-@Injectable({
-  providedIn: 'root',
-})
-export class TaskSevice {
-  private apiUrl = 'http://localhost:5000/tasks';
-  constructor(private http: HttpClient) {}
+@Injectable({ providedIn: 'root' })
+export class TaskService {
+  constructor(private firestore: Firestore) {}
+
   getTasks(): Observable<Task[]> {
-    return this.http.get<Task[]>(this.apiUrl);
+    return new Observable<Task[]>((observer) => {
+      const tasksRef = collection(this.firestore, 'task-tracker');
+      const q = query(tasksRef);
+      
+      const unsubscribe = onSnapshot(q, (snapshot) => {
+        const tasks: Task[] = [];
+        snapshot.forEach((doc) => {
+          const data = doc.data();
+          const task: Task = {
+            id: doc.id,                        
+            text: data['text'] || '',          
+            day: data['day'] || '',            
+            reminder: data['reminder'] || false 
+          };
+          tasks.push(task);
+        });
+        observer.next(tasks);
+      }, (error) => {
+        observer.error(error);
+      });
+
+      return () => unsubscribe();
+    });
   }
 
- 
-  updateTaskReminder(task: Task): Observable<Task> {
-    const url = `${this.apiUrl}/${task.id}`;
-
-    return this.http.put<Task>(url, task, httpOptions);
+  addTask(task: Task) {
+    const { id, ...taskData } = task;
+    const tasksRef = collection(this.firestore, 'task-tracker').withConverter(taskConverter);
+    return addDoc(tasksRef, taskData as Task);
   }
 
-   deleteTask(task: Task): Observable<Task> {
-    const url = `${this.apiUrl}/${task.id}`;
-
-    return this.http.delete<Task>(url);
+  updateTaskReminder(task: Task) {
+    if (!task.id) throw new Error('Task ID is required');
+    const taskDoc = doc(this.firestore, `task-tracker/${task.id}`).withConverter(taskConverter);
+    return updateDoc(taskDoc, { reminder: task.reminder });
   }
 
-  addTask(task: Task): Observable<Task> {
-    return this.http.post<Task>(this.apiUrl, task, httpOptions);
+  deleteTask(task: Task) {
+    if (!task.id) throw new Error('Task ID is required');
+    const taskDoc = doc(this.firestore, `task-tracker/${task.id}`).withConverter(taskConverter);
+    return deleteDoc(taskDoc);
   }
 }

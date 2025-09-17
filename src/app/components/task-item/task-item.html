@@ -1,4 +1,4 @@
-<div class="grid grid-cols-1 md:grid-cols-2">
+<div >
   <div
     class="bg-gray-800 m-2 p-2 rounded-lg flex justify-between"
     [ngClass]="{ 'border-l-4 border-green-500': task.reminder }"
@@ -13,7 +13,9 @@
       <p class="italic text-lg">{{ task.day }}</p>
     </div>
     <div>
-      <button (click)="onDelete(task)" class="text-red-600 hover:text-red-800 hover:cursor-pointer">
+      <button 
+        (click)="onDelete(task); $event.stopPropagation()" 
+        class="text-red-600 hover:text-red-800 hover:cursor-pointer">
         <fa-icon [icon]="faTrash"></fa-icon>
       </button>
     </div>

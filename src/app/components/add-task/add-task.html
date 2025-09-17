@@ -1,17 +1,19 @@
-<form (ngSubmit)="onSubmit()" class="shadow-sm shadow-gray-300 rounded-xl m-3 p-3">
+<form *ngIf="showAddTask" (ngSubmit)="onSubmit()" class="shadow-sm shadow-gray-300 rounded-xl m-3 p-3">
   <div class="mt-3">
-    <label class="font-bold text-lg" for="text">Task:</label>
+    <label class="font-bold text-lg" for="task">Task: </label>
     <input
+      id="task"
       type="text"
-      name="text"
+      name="task"
       [(ngModel)]="text"
       placeholder="Add Task"
       class="rounded-lg placeholder-gray-600 border border-gray-200 m-2 p-2"
     />
   </div>
   <div class="mt-3">
-    <label class="font-bold text-lg" for="text">Day & Time:</label>
+    <label class="font-bold text-lg" for="day">Day & Time: </label>
     <input
+      id="day"
       type="text"
       name="Day & time"
       placeholder="Add Day & time"
@@ -22,6 +24,7 @@
   <div class="mt-3 items-center justify-between">
     <label class="font-bold text-lg" for="reminder">set remider:</label>
     <input
+      id="remider"
       type="checkbox"
       name="remider"
       [(ngModel)]="reminder"
