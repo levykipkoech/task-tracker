@@ -16,5 +16,7 @@
       "dest": "/index.html"
     }
   ],
-  "installCommand": "npm install --legacy-peer-deps"
+  "installCommand": "npm install --legacy-peer-deps",
+   "buildCommand": "ng build --configuration=production",
+  "outputDirectory": "dist/app"
 }
